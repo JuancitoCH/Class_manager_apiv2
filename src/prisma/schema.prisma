@@ -99,5 +99,5 @@ model Subject{
 
 model Schedule{
   id Int @id @default(autoincrement())
-
+  subject_relation Subject[]
 }
