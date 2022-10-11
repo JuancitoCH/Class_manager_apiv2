@@ -22,6 +22,7 @@ model User{
   workspace Workspace[]
   wk_member_relaction Workspace_member[]
   subject_relation Subject[]
+  subject_user_relation Subject_User[]
 
 }
 
@@ -88,16 +89,46 @@ model Subject{
   id Int @id @default(autoincrement())
   name String
   owner_id Int
-  schedule_id Int
+  // schedule_id Int
   description String?
 
   Csubject_relation Category_subject[]
   owner_relation User @relation(fields: [owner_id],references: [id])
-  schedule_relation Schedule @relation(fields: [schedule_id],references: [id])
+  // schedule_relation Schedule @relation(fields: [schedule_id],references: [id])
+  schedule_relation Schedule[]
+  subject_user_relation Subject_User[]
 
 }
 
 model Schedule{
   id Int @id @default(autoincrement())
-  subject_relation Subject[]
+  subject_id Int
+
+  subj_relation Subject @relation(fields: [subject_id],references: [id])
+  // subject_relation Subject[]
+}
+
+model Time{
+  id Int @id @default(autoincrement())
+  time_start DateTime
+  time_end DateTime
+  day Int
+
+  day_relation Day @relation(fields: [day],references: [id])
+}
+
+model Day{
+  id Int @id @default(autoincrement())
+  day String
+
+  time_relation Time[]
+}
+
+model Subject_User{
+  id Int @id @default(autoincrement())
+  user_id Int
+  subject_id Int
+
+  user_relation User @relation(fields: [user_id],references: [id])
+  subject_relation Subject @relation(fields: [subject_id],references: [id])
 }
