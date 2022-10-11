@@ -1,23 +1,19 @@
+const return_Promise = require('../helpers/return_repository_Promise')
 const { Prisma_client } = require('../libs')
 
 class user_queries{
-	static get_all(){
-		return Prisma_client.user.findMany()
-			.then(res=> { return {data:res} })
-			.catch(err=> { 
-				console.log(err)
-				throw err
-			})
+	static async get_all(){
+		return return_Promise(Prisma_client.user.findMany())
 	}
-	static get_one(id){
-		return Prisma_client.user.findFirst({
-			where:{ id }
-		})	
-			.then(res=> { return {data:res} })
-			.catch(err=>{
-				console.log(err)
-				throw err
-			})
+	static async get_one(filters){
+		return return_Promise(Prisma_client.user.findFirst({
+			where:{ ...filters }
+		}))
+	}
+	static async create(data){
+		return return_Promise(Prisma_client.user.create({
+			data
+		}))
 	}
 }
 module.exports = user_queries

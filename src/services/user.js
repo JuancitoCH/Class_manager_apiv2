@@ -1,59 +1,35 @@
+const response_format_Promise = require('../helpers/response_format_Promise')
 const { user_queries } = require('../repository')
 
-class user{
-	one_user(id){
-		// try{
 
-		// 	const user_response = await user_queries.get_one(id)
-		// 	return {
-		// 		success:true,
-		// 		message:' ',
-		// 		...user_response,
-		// 	}
-		// }catch(err){
-		// 	console.log(err)
-		// 	console.log('_____')
-		// 	return {
-		// 		success:false,
-		// 		error:{
-		// 			message:err.message
-		// 		}
-		// 	}
-		// }
-		return user_queries.get_one(id)
-			.then(user_response=>{
-				return {
-					success:true,
-					message:' ',
-					...user_response,
-				}
-			})
-			.catch(err=>{
-				return {
-					success:false,
-					error:{
-						message:err.message
-					}
-				}
-			})
+class user{
+	async one_user(id_string){
+		const id = parseInt(id_string)
+		if(isNaN(id)) 	
+			return {
+				success:false,
+				message:'id provided must be a integer'
+			}
+
+		return response_format_Promise(
+			user_queries.get_one({
+				id
+			}),
+			'message'
+		)
 	}
-	muchos(){
-		return user_queries.get_all()
-			.then(user_response=>{
-				return {
-					success:true,
-					message:' ',
-					...user_response,
-				}
-			})
-			.catch(err=>{
-				return {
-					success:false,
-					error:{
-						message:err.message
-					}
-				}
-			})
+	async all_users(){
+		return response_format_Promise(
+			user_queries.get_all(),
+			'message'
+		)
+	}
+	async create(body_data){
+		body_data.permissions = 1
+		return response_format_Promise(
+			user_queries.create(body_data),
+			'Successfully created'
+		)
 	}
 }
 

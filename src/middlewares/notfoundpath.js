@@ -1,6 +1,7 @@
 module.exports = (req,res)=>{
 	return res.status(404).json({
-		error:'not found'
+		code:404,
+		error:'Not Found'
 	})
 	// next()
 }
