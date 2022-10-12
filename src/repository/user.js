@@ -1,4 +1,4 @@
-const return_Promise = require('../helpers/return_repository_Promise')
+const return_Promise = require('../helpers/repository/return_repository_Promise')
 const { Prisma_client } = require('../libs')
 
 class user_queries{
@@ -15,6 +15,13 @@ class user_queries{
 			data
 		}))
 	}
+	static async delete_ids(ids){
+		return return_Promise(Prisma_client.user.deleteMany({
+			where:{
+				id:{in:ids}
+			}
+		}))
+	}
 	static async update(filter,data){
 		return return_Promise(Prisma_client.user.update({
 			where:{ ...filter },
@@ -27,5 +34,6 @@ class user_queries{
 			
 		// }))
 	}
+
 }
 module.exports = user_queries

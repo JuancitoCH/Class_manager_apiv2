@@ -1,11 +1,11 @@
 module.exports = (promise,message,correct_code=200)=>{
 	return promise.
-		then(user_response=>{
+		then(data_passed=>{
 			return {
 				code:correct_code,
 				success:true,
 				message,
-				...user_response,
+				data:data_passed.data,
 			}
 		})
 		.catch(err=>{

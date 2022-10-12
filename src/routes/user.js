@@ -37,6 +37,14 @@ module.exports = (app) =>{
 					.json(re)
 			})
 	})
+	router.delete('/delete',(req,res)=>{
+		user_service.delete_ids(req.body.ids)
+			.then(re=>{
+				return res
+					.status(re.code)
+					.json(re)
+			})
+	})
 
 	router.patch('/update/:id',(req,res)=>{
 		const data = {

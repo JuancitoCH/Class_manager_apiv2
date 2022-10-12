@@ -67,6 +67,19 @@ class user{
 			'Successfully Updated'
 		)
 	}
+	async delete_ids(ids){
+		let ids_formated = ids.map(id=>{
+			const id_res = parseInt(id)
+			if(isNaN(id_res)) return
+			return id_res
+		})
+		ids_formated = ids_formated.filter(id=>id!=undefined)
+		return response_format_Promise(
+			user_queries.delete_ids(ids_formated),
+			'Successfully Deleted, ids deleted [ '+ids_formated+' ]'
+		)
+	}
+
 }
 
 module.exports = user
