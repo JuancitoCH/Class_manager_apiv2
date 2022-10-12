@@ -15,5 +15,17 @@ class user_queries{
 			data
 		}))
 	}
+	static async update(filter,data){
+		return return_Promise(Prisma_client.user.update({
+			where:{ ...filter },
+			data,
+			
+		}))
+		// return return_Promise(Prisma_client.user.updateMany({
+		// 	where:{ ...filter },
+		// 	data,
+			
+		// }))
+	}
 }
 module.exports = user_queries
