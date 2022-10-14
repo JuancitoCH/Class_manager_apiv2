@@ -8,18 +8,19 @@ class auth{
 		this.User = new User_service()
 	}
 	async login(data){
+	
 		const validation = this.credential_validation(data)
 		if(!validation.success)return validation
 
 		const {email,password} = data
 		const user_validation = await this.User.one_user_by_email(email)
-
 		if(!user_validation.success || 
-            !await this.cryptCompare(password,user_validation.data.password)) return {
+            !await this.cryptCompare(password,user_validation.data?.password)) return {
 			code:200,
 			success:false,
 			message:'Incorrect Credentials'
 		}
+		
 		delete user_validation.data.password
 		const token = this.getToken(user_validation.data)
 		return {
@@ -36,8 +37,7 @@ class auth{
 		if(!validation.success) return validation
 
 		const user_validation = await this.User.one_user_by_email(data.email)
-		
-		if(user_validation.success ) return {
+		if(user_validation.success && user_validation.data!==null ) return {
 			code:200,
 			success:false,
 			message:'You Can\'t Register this Email'
@@ -98,8 +98,13 @@ class auth{
 		return cryptPassword
 	}
 	async cryptCompare(text,hash){
-		const result = await bcrypt.compare(text,hash)
-		return result //true o false
+		try{
+
+			const result = await bcrypt.compare(text,hash)
+			return result //true o false
+		}catch{
+			return false
+		}
 	}
 
 	getToken(userData,time='7d'){

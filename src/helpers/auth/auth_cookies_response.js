@@ -14,7 +14,8 @@ module.exports = async (
 		message,
 		data:user,
 		token } = res_data
-
+	
+	if(!token) return res.json({ success, message, user })
 	let exp
 	try {
 		exp = jwt.verify(token, jwt_secret).exp

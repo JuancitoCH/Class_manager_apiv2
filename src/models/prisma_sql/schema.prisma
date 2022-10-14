@@ -6,17 +6,16 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  
+  id Int @id @default(autoincrement())
   name String
   email String @unique
   password String?
-  provider String?
+  provider Int?
   permissions Int
 
   providerfk Provider? @relation(fields: [provider], references: [id])
@@ -28,17 +27,15 @@ model User{
 }
 
 model Provider{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   name String
   users User[]
 }
 
 model Workspace{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   name String
-  owner String
+  owner Int
   description String?
 
   user_owner User @relation(fields: [owner], references: [id])
@@ -48,10 +45,9 @@ model Workspace{
 }
 
 model Workspace_member{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  workspace_id String
-  user_id String
+  id Int @id @default(autoincrement())
+  workspace_id Int
+  user_id Int
   role Int
 
   workspace_relation Workspace @relation(fields: [workspace_id],references: [id])
@@ -60,18 +56,16 @@ model Workspace_member{
 }
 
 model Workspace_category{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  workspace_id String
-  category_id String
+  id Int @id @default(autoincrement())
+  workspace_id Int
+  category_id Int
 
   workspace_relation Workspace @relation(fields: [workspace_id],references: [id])
   category_relation Category @relation(fields: [category_id],references: [id])
 }
 
 model Category{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   name String
   type Int
   password String?
@@ -82,10 +76,9 @@ model Category{
 }
 
 model Category_subject{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  category_id String
-  subject_id String
+  id Int @id @default(autoincrement())
+  category_id Int
+  subject_id Int
 
   category_relation Category @relation(fields: [category_id],references: [id])
   subject_relation Subject @relation(fields: [subject_id],references: [id])
@@ -93,49 +86,48 @@ model Category_subject{
 }
 
 model Subject{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   name String
-  owner_id String
+  owner_id Int
+  // schedule_id Int
   description String?
 
   Csubject_relation Category_subject[]
   owner_relation User @relation(fields: [owner_id],references: [id])
+  // schedule_relation Schedule @relation(fields: [schedule_id],references: [id])
   schedule_relation Schedule[]
   subject_user_relation Subject_User[]
 
 }
 
 model Schedule{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  subject_id String
-  subj_relation Subject @relation(fields: [subject_id],references: [id])
+  id Int @id @default(autoincrement())
+  subject_id Int
 
+  subj_relation Subject @relation(fields: [subject_id],references: [id])
+  // subject_relation Subject[]
 }
 
 model Time{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   time_start DateTime
   time_end DateTime
-  day String
+  day Int
 
   day_relation Day @relation(fields: [day],references: [id])
 }
 
 model Day{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id Int @id @default(autoincrement())
   day String
 
   time_relation Time[]
 }
 
 model Subject_User{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  user_id String
-  subject_id String
+  id Int @id @default(autoincrement())
+  user_id Int
+  subject_id Int
 
   user_relation User @relation(fields: [user_id],references: [id])
   subject_relation Subject @relation(fields: [subject_id],references: [id])
