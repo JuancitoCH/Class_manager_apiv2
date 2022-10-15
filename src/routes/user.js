@@ -1,4 +1,5 @@
 const express = require('express')
+const {auth_permisions} = require('../middlewares/')
 const { user_service:User} = require('../services')
 
 module.exports = (app) =>{
@@ -23,7 +24,7 @@ module.exports = (app) =>{
 	})
 	
 
-	router.get('/all',(req,res)=>{
+	router.get('/all',auth_permisions([3]),(req,res)=>{
 		user_service.all_users()
 			.then(re=>{
 				return res.status(re.code).json(re)

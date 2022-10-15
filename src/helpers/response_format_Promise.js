@@ -16,8 +16,8 @@ module.exports = (promise,message,correct_code=200)=>{
 				code:500,
 				success:false,
 				error:{
-					// message:err.message
-					message:'a Server error ocurred'
+					message:err.meta ? err.meta.message :'a Server error ocurred'
+					// message:'a Server error ocurred'
 				}
 			}
 		})

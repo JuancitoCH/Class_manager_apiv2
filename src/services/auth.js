@@ -47,7 +47,6 @@ class auth{
 			email:data.email,
 			password:crypt_password,
 			name:data.name,
-			permissions:0
 		})
 		delete registered_user.data?.password
 		const token = this.getToken(registered_user.data)
@@ -58,6 +57,32 @@ class auth{
 			data:registered_user.data,
 			token
 		}
+	}
+
+	async SignIn_Provider(data,provider){
+		const user_validation = await this.User.one_user_by_email(data.email)
+		console.log(provider)
+
+		let user_response ={}
+		if(user_validation.success && user_validation.data!==null ) {
+			delete user_validation.data?.password
+			user_response = user_validation
+		}else{
+			user_response = await this.User.create({
+				email:data.email,
+				name:data.name,
+			})
+		}
+		
+		const token = this.getToken(user_response.data)
+		return {
+			code:200,
+			success:true,
+			message:'Successfully signin',
+			data:user_response.data,
+			token
+		}
+
 	}
 
 	credential_validation(credential,type='login'){
@@ -113,7 +138,7 @@ class auth{
 			name:userData.name,
 			password:userData.password,
 			email:userData.email,
-			permission:userData.permission
+			permissions:userData.permissions
 		}
 		const token = jwt.sign(user,jwt_secret,{expiresIn:time})
 		return token

@@ -17,7 +17,7 @@ model User{
   email String @unique
   password String?
   provider String?
-  permissions Int
+  permissions Int @default(0)
 
   providerfk Provider? @relation(fields: [provider], references: [id])
   workspace Workspace[]
