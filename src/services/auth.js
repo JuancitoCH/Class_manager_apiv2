@@ -64,6 +64,7 @@ class auth{
 		console.log(provider)
 
 		let user_response ={}
+		// TODO: Validar el Provider para no permitir logeos incorrectos
 		if(user_validation.success && user_validation.data!==null ) {
 			delete user_validation.data?.password
 			user_response = user_validation

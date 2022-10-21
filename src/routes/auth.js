@@ -38,4 +38,17 @@ module.exports = (app) =>{
 			// return res.redirect('/api/')
 		}
 	)
+
+	router.get('/facebook',
+		passport.authenticate('facebook')
+	)
+	router.get('/facebook/callback',
+		passport.authenticate('facebook'),(req,res)=>{
+			console.log(req.user.profile)
+			auth_service.SignIn_Provider(req.user.profile._json,'Facebook')
+				.then(response_data=>{
+					return auth_cookies_response(res,response_data)
+				})
+		}
+	)
 }
