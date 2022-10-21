@@ -8,12 +8,13 @@ class user_queries{
 	}
 	static async get_one(filters){
 		return return_Promise(Prisma_client.user.findFirst({
-			where:{ ...filters }
+			where:{ ...filters },
+			// include:{ providerfk:true},
 		}))
 	}
 	static async create(data){
 		return return_Promise(Prisma_client.user.create({
-			data
+			data,
 		}))
 	}
 	static async delete_ids(ids){

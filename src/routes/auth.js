@@ -43,7 +43,7 @@ module.exports = (app) =>{
 		passport.authenticate('facebook')
 	)
 	router.get('/facebook/callback',
-		passport.authenticate('facebook'),(req,res)=>{
+		passport.authenticate('facebook',{ failureRedirect: '/api/' }),(req,res)=>{
 			console.log(req.user.profile)
 			auth_service.SignIn_Provider(req.user.profile._json,'Facebook')
 				.then(response_data=>{

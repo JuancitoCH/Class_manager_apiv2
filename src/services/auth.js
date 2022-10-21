@@ -2,10 +2,13 @@ const User_service = require('./user')
 const jwt = require('jsonwebtoken')
 const {jwt_secret} = require('../config/')
 const bcrypt = require('bcrypt')
+const Provider_Service = require('./provider')
+
 
 class auth{
 	constructor(){
 		this.User = new User_service()
+		this.Provider = new Provider_Service()
 	}
 	async login(data){
 	
@@ -61,17 +64,22 @@ class auth{
 
 	async SignIn_Provider(data,provider){
 		const user_validation = await this.User.one_user_by_email(data.email)
-		console.log(provider)
-
 		let user_response ={}
-		// TODO: Validar el Provider para no permitir logeos incorrectos
-		if(user_validation.success && user_validation.data!==null ) {
+		const {data:{id:provider_id}} = await this.Provider.get_one(provider)
+		if( user_validation && user_validation.data!==null  && user_validation.data?.provider==null ) return{
+			success:false,
+			message:'The User Cannot Login using This Service',
+			data:null
+		}
+
+		if(user_validation.success && user_validation.data!==null) {
 			delete user_validation.data?.password
 			user_response = user_validation
 		}else{
 			user_response = await this.User.create({
 				email:data.email,
 				name:data.name,
+				provider:provider_id
 			})
 		}
 		
