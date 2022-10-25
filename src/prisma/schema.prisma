@@ -57,6 +57,8 @@ model Workspace_member{
   workspace_relation Workspace @relation(fields: [workspace_id],references: [id])
   user_relation User @relation(fields: [user_id],references: [id])
 
+  @@index([workspace_id,user_id])
+
 }
 
 model Workspace_category{

@@ -61,10 +61,44 @@ class Workspace_Service {
 			'Successfully Updated'
 		)
 	}
-	async getOne(workspace_id){
+	async getOne(user_info,workspace_id){
 		return response_format_Promise(
-			Workspace_Repository.get_one({id:workspace_id}),
+			Workspace_Repository.get_one({
+				id:workspace_id,
+				owner:user_info.id
+			}),
 			'Successfully Obtained'
+		)
+	}
+	async getOne_member(){
+		// return response_format_Promise(
+		// 	Workspace_Repository.get_one({
+		// 		id:workspace_id,
+		// 		owner:user_info.id
+		// 	}),
+		// 	'Successfully Obtained'
+		// )
+	}
+	async add_member_workspace(workspace_id,data){
+		// User Who Added must have the permissions or be the owner
+		const user_alredy= await Workspace_Repository.get_One_member({
+			workspace_id,
+			user_id :data.member_id,
+		})
+		console.log(user_alredy)
+		if(user_alredy.data) return {
+			success:false,
+			code:400,
+			message:'user Alredy in the Workspace'
+		}
+		const data_formated = {
+			workspace_id,
+			user_id :data.member_id,
+			role:data.role
+		}
+		return response_format_Promise(
+			Workspace_Repository.add_member(data_formated),
+			'Successfully Created'
 		)
 	}
 }

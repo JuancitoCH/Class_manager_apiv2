@@ -28,7 +28,7 @@ module.exports = (app) =>{
 			})
 	})
 	router.get('/user/one/:id',auth_permisions([0,1,2,3]),(req,res)=>{
-		workspace_service.getOne(req.params.id)
+		workspace_service.getOne(req.user_data,req.params.id)
 			.then(re=>{
 				return res.status(re.code).json(re)
 			})
@@ -45,6 +45,12 @@ module.exports = (app) =>{
 			req.params.id,
 			req.body
 		)
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
+	router.post('/member/add/:id',auth_permisions([0,1,2,3]),(req,res)=>{
+		workspace_service.add_member_workspace(req.params.id,req.body)
 			.then(re=>{
 				return res.status(re.code).json(re)
 			})

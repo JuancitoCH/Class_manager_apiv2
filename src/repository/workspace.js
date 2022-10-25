@@ -14,7 +14,12 @@ class Workspace_Repository{
 		return return_Promise(Prisma_client.workspace.findFirst({
 			where:{ ...filters },
 			include:{
-				wk_member_relation:true
+				wk_member_relation:{select:{
+					user_relation:{select:{
+						name:true,
+						email:true
+					}}
+				}}
 			}
 		}))
 	}
@@ -45,5 +50,18 @@ class Workspace_Repository{
 			
 		}))
 	}
+	static async add_member(data){
+		return return_Promise(Prisma_client.workspace_member.create({
+			data,
+		}))
+	}
+
+	static async get_members(){}
+	static async get_One_member(filters){
+		return return_Promise(Prisma_client.workspace_member.findFirst({
+			where:{...filters}
+		}))
+	}
+
 }
 module.exports = Workspace_Repository
