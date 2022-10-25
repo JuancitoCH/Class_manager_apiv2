@@ -11,7 +11,7 @@ module.exports = (permissions)=>{
 					success:false,
 					message:'User Don\'t have permissions'
 				})
-			
+			req.user_data = user_data
 			return next()
 			
 		}catch(err){

@@ -21,7 +21,7 @@ model User{
 
   providerfk Provider? @relation(fields: [provider], references: [id])
   workspace Workspace[]
-  wk_member_relaction Workspace_member[]
+  wk_member_relation Workspace_member[]
   subject_relation Subject[]
   subject_user_relation Subject_User[]
 
@@ -35,14 +35,14 @@ model Provider{
 }
 
 model Workspace{
-    id String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   name String
   owner String
   description String?
 
   user_owner User @relation(fields: [owner], references: [id])
-  wk_member_relaction Workspace_member[]
+  wk_member_relation Workspace_member[]
   wcategory_relation Workspace_category[]
 
 }
