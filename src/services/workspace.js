@@ -100,18 +100,8 @@ class Workspace_Service {
 			code:400,
 			message:'You must include a Field member_id'
 		}
-		const workspace_info = await Workspace_Repository.get_one({id:workspace_id})
-		const workspace_user_whoadd = await this.getOne_member(user_info.id,workspace_id)
-
-		// Have Permisions?
-		if(
-			workspace_user_whoadd.data?.role<=0 &&
-			workspace_info.data?.owner != user_info.id
-		) return {
-			success:false,
-			code:400,
-			message:'User Don\'t have permissions'
-		}
+		const permission_acepted= await this.user_have_permissions(user_info,workspace_id,0)
+		if(!permission_acepted.success)return permission_acepted
 
 		const user_alredy= await Workspace_Repository.get_One_member({
 			workspace_id,
@@ -130,8 +120,53 @@ class Workspace_Service {
 		}
 		return response_format_Promise(
 			Workspace_Repository.add_member(data_formated),
-			'Successfully Created'
+			'Successfully Added'
 		)
+	}
+
+	async update_rol_member(user_info,workspace_id,data){
+		const permission_acepted= await this.user_have_permissions(user_info,workspace_id,2)
+		if(!permission_acepted.success)return permission_acepted
+		const {member_id,role}=data
+		if(role>3)return {
+			success:false,
+			code:400,
+			message:'Role Cant\'t be more than 3'
+		}
+
+		return response_format_Promise(
+			Workspace_Repository.update_member(workspace_id,member_id,{role}),
+			'Successfully Updated'
+		)
+	}
+	async delete_member(user_info,workspace_id,data){
+		const permission_acepted= await this.user_have_permissions(user_info,workspace_id,2)
+		if(!permission_acepted.success)return permission_acepted
+		const {member_id} = data
+		return response_format_Promise(
+			Workspace_Repository.delete_member(workspace_id,member_id),
+			'Successfully Deleted'
+		)
+	}
+
+	async user_have_permissions(user_info,workspace_id,role_range_exeption){
+		const workspace_info = await Workspace_Repository.get_one({id:workspace_id})
+		const workspace_user_whoadd = await this.getOne_member(user_info.id,workspace_id)
+
+		// Have Permisions?
+		if(
+			workspace_user_whoadd.data?.role<=role_range_exeption &&
+			workspace_info.data?.owner != user_info.id
+		) return {
+			success:false,
+			code:400,
+			message:'User Don\'t have permissions'
+		}
+		else{
+			return {
+				success:true
+			}
+		}
 	}
 }
 module.exports = Workspace_Service

@@ -9,10 +9,12 @@ HolaClavedeparticionOpcioneal
 - Admin 3
 - Editor 1
 - Lector 0
+# Complete
+- FT: Add All The repository functions and service for Members on Workspace
+# Doing
 
 # Todo
 - FT: Service to add member by his email
-- FT: Add All The repository functions and service for Members on Workspace
 - FT: Send Email for Invitations to Workspace
 - FT: Send Email for validate register
 - FT: Send Invitations to Workspace and have a 'casilla' of invitations

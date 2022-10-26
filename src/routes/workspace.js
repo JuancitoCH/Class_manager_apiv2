@@ -61,4 +61,16 @@ module.exports = (app) =>{
 				return res.status(re.code).json(re)
 			})
 	})
+	router.patch('/member/update/:id',auth_permisions([0,1,2,3]),(req,res)=>{
+		workspace_service.update_rol_member(req.user_data,req.params.id,req.body)
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
+	router.delete('/member/delete/:id',auth_permisions([0,1,2,3]),(req,res)=>{
+		workspace_service.delete_member(req.user_data,req.params.id,req.body)
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
 }

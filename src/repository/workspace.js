@@ -52,6 +52,7 @@ class Workspace_Repository{
 			
 		}))
 	}
+	// ---------- -Members section- ---------
 	static async add_member(data){
 		return return_Promise(Prisma_client.workspace_member.create({
 			data,
@@ -72,6 +73,25 @@ class Workspace_Repository{
 			where:{...filters}
 		}))
 	}
+	static async delete_member(workspace_id,member_id){
+		return return_Promise(Prisma_client.workspace_member.deleteMany({
+			where:{	
+				workspace_id,
+				user_id:member_id
+			}
+		}))
+	}
+	static async update_member(workspace_id,member_id,data){
+		return return_Promise(Prisma_client.workspace_member.updateMany({
+			where:{	
+				workspace_id,
+				user_id:member_id
+			},
+			data
+		}))
+	}
+	// ---------- -Members section End- ---------
+
 
 }
 module.exports = Workspace_Repository
