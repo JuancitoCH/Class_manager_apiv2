@@ -15,9 +15,11 @@ class Workspace_Repository{
 			where:{ ...filters },
 			include:{
 				wk_member_relation:{select:{
+					role:true,
 					user_relation:{select:{
+						id:true,
 						name:true,
-						email:true
+						email:true,
 					}}
 				}}
 			}
@@ -56,7 +58,15 @@ class Workspace_Repository{
 		}))
 	}
 
-	static async get_members(){}
+	// static async get_members(){}
+	static async get_relation_members_works(filter){
+		return return_Promise(Prisma_client.workspace_member.findMany({
+			where:{...filter},
+			include:{
+				workspace_relation:true
+			}
+		}))
+	}
 	static async get_One_member(filters){
 		return return_Promise(Prisma_client.workspace_member.findFirst({
 			where:{...filters}

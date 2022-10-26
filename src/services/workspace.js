@@ -62,30 +62,62 @@ class Workspace_Service {
 		)
 	}
 	async getOne(user_info,workspace_id){
+		const member_workspace = await Workspace_Repository.get_One_member({
+			user_id:user_info.id,
+			workspace_id
+		})
 		return response_format_Promise(
 			Workspace_Repository.get_one({
 				id:workspace_id,
-				owner:user_info.id
+				...(!member_workspace.data ? {owner:user_info.id}:{})
 			}),
 			'Successfully Obtained'
 		)
 	}
-	async getOne_member(){
-		// return response_format_Promise(
-		// 	Workspace_Repository.get_one({
-		// 		id:workspace_id,
-		// 		owner:user_info.id
-		// 	}),
-		// 	'Successfully Obtained'
-		// )
+	async getOne_member(user_id,workspace_id){
+		return response_format_Promise(
+			Workspace_Repository.get_One_member({
+				workspace_id,
+				user_id
+			}),
+			'Successfully Obtained'
+		)
 	}
-	async add_member_workspace(workspace_id,data){
+	async getWorkspaceWhereUserAreIn(user_info){
+		return response_format_Promise(
+			Workspace_Repository.get_relation_members_works({
+				user_id:user_info.id
+			}),
+			'Successfully Obtained'
+		)
+	}
+
+	async add_member_workspace(user_info,workspace_id,data){
 		// User Who Added must have the permissions or be the owner
+		// Editor 1 and 2, 3(Admin)
+		if(!data.member_id)return{
+			success:false,
+			code:400,
+			message:'You must include a Field member_id'
+		}
+		const workspace_info = await Workspace_Repository.get_one({id:workspace_id})
+		const workspace_user_whoadd = await this.getOne_member(user_info.id,workspace_id)
+
+		// Have Permisions?
+		if(
+			workspace_user_whoadd.data?.role<=0 &&
+			workspace_info.data?.owner != user_info.id
+		) return {
+			success:false,
+			code:400,
+			message:'User Don\'t have permissions'
+		}
+
 		const user_alredy= await Workspace_Repository.get_One_member({
 			workspace_id,
 			user_id :data.member_id,
 		})
-		console.log(user_alredy)
+		// User Alredy in workspace?
 		if(user_alredy.data) return {
 			success:false,
 			code:400,

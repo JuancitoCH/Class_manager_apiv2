@@ -15,6 +15,12 @@ module.exports = (app) =>{
 				return res.status(re.code).json(re)
 			})
 	})
+	router.get('/in',auth_permisions([0,1,2,3]),(req,res)=>{
+		workspace_service.getWorkspaceWhereUserAreIn(req.user_data)
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
 	router.post('/',auth_permisions([0,1,2,3]),(req,res)=>{
 		workspace_service.createUserWorkspace(req.body,req.user_data)
 			.then(re=>{
@@ -50,7 +56,7 @@ module.exports = (app) =>{
 			})
 	})
 	router.post('/member/add/:id',auth_permisions([0,1,2,3]),(req,res)=>{
-		workspace_service.add_member_workspace(req.params.id,req.body)
+		workspace_service.add_member_workspace(req.user_data,req.params.id,req.body)
 			.then(re=>{
 				return res.status(re.code).json(re)
 			})
