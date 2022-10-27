@@ -15,5 +15,25 @@ module.exports = (app) =>{
 				return res.status(re.code).json(re)
 			})
 	})
+	router.post('/:workspace_id',auth_permisions([0,1,2,3]),(req,res)=>{
+		category_Service.create({
+			workspace_id:req.params.workspace_id,
+			user_info:req.user_data,
+			...req.body
+		})
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
+	router.delete('/:workspace_id',auth_permisions([0,1,2,3]),(req,res)=>{
+		category_Service.delete({
+			workspace_id:req.params.workspace_id,
+			user_info:req.user_data,
+			...req.body
+		})
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
 
 }

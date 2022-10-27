@@ -21,7 +21,19 @@ class Workspace_Repository{
 						name:true,
 						email:true,
 					}}
-				}}
+				}},
+				wcategory_relation:{select:{
+					category_relation:{
+						select:{
+							id:true,
+							name:true,
+							type:true,
+							description:true
+						}
+					},
+				}
+
+				}
 			}
 		}))
 	}

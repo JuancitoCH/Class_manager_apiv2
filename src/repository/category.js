@@ -1,7 +1,7 @@
 const return_Promise = require('../helpers/repository/return_repository_Promise')
 const { Prisma_client } = require('../libs')
 
-class Categoty_repository{
+class Category_repository{
 	static async get_all(){
 		return return_Promise(Prisma_client.category.findMany())
 	}
@@ -20,5 +20,18 @@ class Categoty_repository{
 			where:{id}
 		}))
 	}
+
+	// relation table workspace
+
+	static async create_workspace_relation(data){
+		return return_Promise(Prisma_client.workspace_category.create({
+			data
+		}))
+	}
+	static async delete_workspace_relation(filters){
+		return return_Promise(Prisma_client.workspace_category.deleteMany({
+			where:{...filters},
+		}))
+	}
 }
-module.exports = Categoty_repository
+module.exports = Category_repository

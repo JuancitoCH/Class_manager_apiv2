@@ -80,7 +80,7 @@ class Workspace_Service {
 				workspace_id,
 				user_id
 			}),
-			'Successfully Obtained'
+			'Obtain'
 		)
 	}
 	async getWorkspaceWhereUserAreIn(user_info){
@@ -150,23 +150,49 @@ class Workspace_Service {
 	}
 
 	async user_have_permissions(user_info,workspace_id,role_range_exeption){
-		const workspace_info = await Workspace_Repository.get_one({id:workspace_id})
-		const workspace_user_whoadd = await this.getOne_member(user_info.id,workspace_id)
-
-		// Have Permisions?
-		if(
-			workspace_user_whoadd.data?.role<=role_range_exeption &&
-			workspace_info.data?.owner != user_info.id
-		) return {
-			success:false,
-			code:400,
-			message:'User Don\'t have permissions'
-		}
-		else{
+		try{
+			const workspace_info = await Workspace_Repository.get_one({id:workspace_id})
+			const workspace_user_whoadd = await this.getOne_member(user_info.id,workspace_id)
+			if(
+				workspace_user_whoadd.data?.role<=role_range_exeption &&
+				workspace_info.data?.owner != user_info.id
+			) return {
+				success:false,
+				code:400,
+				message:'User Don\'t have permissions'
+			}
+			else{
+				if (workspace_user_whoadd.data==null &&
+					workspace_info.data?.owner != user_info.id )
+					return {
+						success:false,
+						code:400,
+						message:'User Don\'t have permissions'
+					}
+				return {
+					success:true
+				}
+			}
+		}catch(err){
+			console.log(err)
+			if(err.meta?.message?.match(/malformed \S*:/i)[0]) return {
+				success:false,
+				code:500,
+				error:{
+					message:err.meta.message.match(/malformed \S*:/i)[0] + ' Of the Workspace'
+				}
+			}
 			return {
-				success:true
+				success:false,
+				code:500,
+				error:{
+					message:'Server Error Ocurred'
+				}
 			}
 		}
+
+		// Have Permisions?
+		
 	}
 }
 module.exports = Workspace_Service

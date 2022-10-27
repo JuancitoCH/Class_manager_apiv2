@@ -14,7 +14,7 @@ HolaClavedeparticionOpcioneal
 - FIX: When You Delete none file the output message it says successfully
 - FIX: When Obtained one Workspace and its null the message also is success and true in the response, we need to change the response format function
 # Doing
-
+- FT: Add Update route for category and its service and repository
 # Todo
 - FIX: Messages of success
 - FT: Service to add member by his email
