@@ -5,6 +5,30 @@ class Category_repository{
 	static async get_all(){
 		return return_Promise(Prisma_client.category.findMany())
 	}
+	static async get_categories_relation_workspace_data(filter){
+		return return_Promise(Prisma_client.workspace_category.findMany({
+			where:{
+				...filter
+			},
+			select:{
+				category_relation:{
+					select:{
+						id:true,
+						name:true,
+						description:true,
+						type:true
+					}
+				},
+			}
+		}))
+	}
+	static async get_categories_relation_workspace(filter){
+		return return_Promise(Prisma_client.workspace_category.findFirst({
+			where:{
+				...filter
+			},
+		}))
+	}
 	static async get_one(filters){
 		return return_Promise(Prisma_client.category.findFirst({
 			where:{ ...filters }
@@ -12,6 +36,14 @@ class Category_repository{
 	}
 	static async create(data){
 		return return_Promise(Prisma_client.category.create({
+			data
+		}))
+	}
+	static async update(category_id,data){
+		return return_Promise(Prisma_client.category.update({
+			where:{
+				id:category_id
+			},
 			data
 		}))
 	}

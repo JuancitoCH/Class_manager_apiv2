@@ -8,9 +8,14 @@ module.exports = (app) =>{
 	
 	const category_Service = new Category()
 	
-	
 	router.get('/',auth_permisions([3]),(req,res)=>{
 		category_Service.get_all()
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
+	router.get('/:workspace_id',auth_permisions([0,1,2,3]),(req,res)=>{
+		category_Service.get_categories_workspace(req.params.workspace_id)
 			.then(re=>{
 				return res.status(re.code).json(re)
 			})
@@ -19,6 +24,16 @@ module.exports = (app) =>{
 		category_Service.create({
 			workspace_id:req.params.workspace_id,
 			user_info:req.user_data,
+			...req.body
+		})
+			.then(re=>{
+				return res.status(re.code).json(re)
+			})
+	})
+	router.patch('/:category_id',auth_permisions([0,1,2,3]),(req,res)=>{
+		category_Service.update({
+			user_info:req.user_data,
+			category_id:req.params.category_id,
 			...req.body
 		})
 			.then(re=>{

@@ -9,13 +9,20 @@ HolaClavedeparticionOpcioneal
 - Admin 3
 - Editor 1
 - Lector 0
+  
 # Complete
+
 - FT: Add All The repository functions and service for Members on Workspace
 - FIX: When You Delete none file the output message it says successfully
 - FIX: When Obtained one Workspace and its null the message also is success and true in the response, we need to change the response format function
-# Doing
 - FT: Add Update route for category and its service and repository
+- FT: method to get categories of a workspace
+
+# Doing
+
 # Todo
+
+
 - FIX: Messages of success
 - FT: Service to add member by his email
 - FT: Send Email for Invitations to Workspace
