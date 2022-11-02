@@ -20,7 +20,7 @@ class Workspace_Service {
 		if(!(data.name?.length > 3)) return {
 			success:false,
 			code:400,
-			message:'You Must Include a Name With at least 3 words of lenght'
+			message:'Invalid Workspace: You Must Include a Name With at least 3 words of lenght'
 		}
 		const data_formated={
 			name: data.name,
@@ -36,7 +36,7 @@ class Workspace_Service {
 		if(!workspace_ids)return{
 			success:false,
 			code:400,
-			message:'You Must Include an Array of ids in the field ids'
+			message:'Invalid Workspace: You Must Include an Array of ids in the field ids'
 		}
 		const ids_formated = workspace_ids.filter(id=>typeof(id)==typeof(' '))
 		return response_format_Promise(
@@ -50,7 +50,7 @@ class Workspace_Service {
 		if(!(workspace_info.data.owner == user_info.id))return {
 			success:false,
 			code:400,
-			message:'Action Not Authorize'
+			message:'Invalid Workspace: Action Not Authorize'
 		}
 		const filter = {
 			// owner:user_info.id,
@@ -98,7 +98,7 @@ class Workspace_Service {
 		if(!data.member_id)return{
 			success:false,
 			code:400,
-			message:'You must include a Field member_id'
+			message:'Invalid Workspace: You must include a Field member_id'
 		}
 		const permission_acepted= await this.user_have_permissions(user_info,workspace_id,0)
 		if(!permission_acepted.success)return permission_acepted
@@ -111,7 +111,7 @@ class Workspace_Service {
 		if(user_alredy.data) return {
 			success:false,
 			code:400,
-			message:'user Alredy in the Workspace'
+			message:'Invalid Workspace: user Alredy in the Workspace'
 		}
 		const data_formated = {
 			workspace_id,
@@ -131,7 +131,7 @@ class Workspace_Service {
 		if(role>3)return {
 			success:false,
 			code:400,
-			message:'Role Cant\'t be more than 3'
+			message:'Invalid Workspace: Role Cant\'t be more than 3'
 		}
 
 		return response_format_Promise(
@@ -159,7 +159,7 @@ class Workspace_Service {
 			) return {
 				success:false,
 				code:400,
-				message:'User Don\'t have permissions'
+				message:'Invalid Workspace: User Don\'t have permissions'
 			}
 			else{
 				if (workspace_user_whoadd.data==null &&
@@ -167,7 +167,7 @@ class Workspace_Service {
 					return {
 						success:false,
 						code:400,
-						message:'User Don\'t have permissions'
+						message:'Invalid Workspace: User Don\'t have permissions'
 					}
 				return {
 					success:true
@@ -179,7 +179,7 @@ class Workspace_Service {
 				success:false,
 				code:500,
 				error:{
-					message:err.meta.message.match(/malformed \S*:/i)[0] + ' Of the Workspace'
+					message:'Invalid Workspace: '+err.meta.message.match(/malformed \S*:/i)[0] + ' Of the Workspace'
 				}
 			}
 			return {

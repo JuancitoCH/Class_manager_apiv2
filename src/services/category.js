@@ -36,7 +36,7 @@ class Category_Service{
 		if(!name || type==undefined )return {
 			success:false,
 			code:400,
-			message:'You must include the fields name and type'
+			message:'Invalid Category: You must include the fields name and type'
 		}
 		// si necesito crear el objeto global lo creo
 		const permision=await this.Workspace_Service.user_have_permissions(user_info,workspace_id,0)

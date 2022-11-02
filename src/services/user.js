@@ -26,8 +26,9 @@ class user{
 				.then(res=>{
 					if(res.data == null) return {
 						success:false,
+						code:400,
 						data:null,
-						message:'User not found'
+						message:'Invalid User: User not found'
 					}
 					return res
 				}),

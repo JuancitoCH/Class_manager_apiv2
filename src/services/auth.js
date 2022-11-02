@@ -21,7 +21,7 @@ class auth{
             !await this.cryptCompare(password,user_validation.data?.password)) return {
 			code:200,
 			success:false,
-			message:'Incorrect Credentials'
+			message:'Invalid Auth: Incorrect Credentials'
 		}
 		
 		delete user_validation.data.password
@@ -43,7 +43,7 @@ class auth{
 		if(user_validation.success && user_validation.data!==null ) return {
 			code:200,
 			success:false,
-			message:'You Can\'t Register this Email'
+			message:'Invalid Auth: You Can\'t Register this Email'
 		}
 		const crypt_password =await this.cryptPassword(data.password)
 		const registered_user = await this.User.create({
@@ -68,7 +68,7 @@ class auth{
 		const {data:{id:provider_id}} = await this.Provider.get_one(provider)
 		if( user_validation && user_validation.data!==null  && user_validation.data?.provider==null ) return{
 			success:false,
-			message:'The User Cannot Login using This Service',
+			message:'Invalid Auth: The User Cannot Login using This Service',
 			data:null
 		}
 
@@ -101,7 +101,7 @@ class auth{
 				if(!email) return {
 					code:200,
 					success:false,
-					message:'An Email must be Provide'
+					message:'Invalid Auth: An Email must be Provide'
 				}
 				return {
 					success:true
@@ -118,7 +118,7 @@ class auth{
 					return {
 						code:200,
 						success:false,
-						message: message +'must be Provide'
+						message:'Invalid Auth: '+ message +'must be Provide'
 					}
 				}
 				return { success:true }
