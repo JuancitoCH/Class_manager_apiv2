@@ -9,16 +9,20 @@ module.exports = (app) =>{
 	app.use('/api/auth',router)
 	const auth_service = new Auth()
 	
-	router.post('/login',(req,res)=>{
+	router.post('/login',(req,res,next)=>{
 		auth_service.login(req.body)
 			.then(response_data=>{
 				return auth_cookies_response(res,response_data)
+			}).catch(e=>{
+				next(e)
 			})
 	})
-	router.post('/signup',(req,res)=>{
+	router.post('/signup',(req,res,next)=>{
 		auth_service.signup(req.body)
 			.then(response_data=>{
 				return auth_cookies_response(res,response_data)
+			}).catch(e=>{
+				next(e)
 			})
 	})
 	router.get('/logout',(req,res)=>{
@@ -29,12 +33,12 @@ module.exports = (app) =>{
 		passport.authenticate('google')
 	)
 	router.get('/google/callback',
-		passport.authenticate('google'),(req,res)=>{
+		passport.authenticate('google'),(req,res,next)=>{
 			
 			auth_service.SignIn_Provider(req.user.profile._json,'Google')
 				.then(response_data=>{
 					return auth_cookies_response(res,response_data)
-				})
+				}).catch(e=>next(e))
 			// return res.redirect('/api/')
 		}
 	)
@@ -43,12 +47,12 @@ module.exports = (app) =>{
 		passport.authenticate('facebook')
 	)
 	router.get('/facebook/callback',
-		passport.authenticate('facebook',{ failureRedirect: '/api/' }),(req,res)=>{
+		passport.authenticate('facebook',{ failureRedirect: '/api/' }),(req,res,next)=>{
 			console.log(req.user.profile)
 			auth_service.SignIn_Provider(req.user.profile._json,'Facebook')
 				.then(response_data=>{
 					return auth_cookies_response(res,response_data)
-				})
+				}).catch(e=>next(e))
 		}
 	)
 }

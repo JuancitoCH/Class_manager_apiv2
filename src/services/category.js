@@ -17,6 +17,11 @@ class Category_Service{
 		)
 	}
 	async get_categories_workspace(user_info,workspace_id){
+		if(!workspace_id)return {
+			success:false,
+			code:400,
+			message:'Invalid Category: You must include a workspace_id'
+		}
 		const permision=await this.Workspace_Service.user_have_permissions(user_info,workspace_id,-1)
 		if(!permision.success) return permision
 		

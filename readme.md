@@ -17,6 +17,7 @@ HolaClavedeparticionOpcioneal
 - FIX: When Obtained one Workspace and its null the message also is success and true in the response, we need to change the response format function
 - FT: Add Update route for category and its service and repository
 - FT: method to get categories of a workspace
+- FIX: Hay Que Cambiar los campos de los miembros, para que no pueda añadir al mismo miembro 2 veces
 
 # Doing
 
@@ -28,4 +29,3 @@ HolaClavedeparticionOpcioneal
 - FT: Send Email for Invitations to Workspace
 - FT: Send Email for validate register
 - FT: Send Invitations to Workspace and have a 'casilla' of invitations
-- FIX: Hay Que Cambiar los campos de los miembros, para que no pueda añadir al mismo miembro 2 veces
