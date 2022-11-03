@@ -24,6 +24,7 @@ model User{
   wk_member_relation Workspace_member[]
   subject_relation Subject[]
   subject_user_relation Subject_User[]
+  CUser_relation Category_User[]
 
 }
 
@@ -81,6 +82,7 @@ model Category{
 
   wspace_relation Workspace_category[]
   Csubject_relation Category_subject[]
+  CUser_relation Category_User[]
 }
 
 model Category_subject{
@@ -91,6 +93,15 @@ model Category_subject{
 
   category_relation Category @relation(fields: [category_id],references: [id])
   subject_relation Subject @relation(fields: [subject_id],references: [id])
+  
+}
+model Category_User{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  category_id String
+  user_id String
+
+  category_relation Category @relation(fields: [category_id],references: [id])
+  user_relation User @relation(fields: [user_id],references: [id])
   
 }
 
