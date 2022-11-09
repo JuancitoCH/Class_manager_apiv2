@@ -94,5 +94,11 @@ class Category_repository{
 			}
 		}))
 	}
+
+	static async delete_user_category(filters){
+		return return_Promise(Prisma_client.category_User.deleteMany({
+			where:{...filters},
+		}))
+	}
 }
 module.exports = Category_repository

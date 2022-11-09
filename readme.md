@@ -32,5 +32,5 @@ HolaClavedeparticionOpcioneal
 - FT: If category has a type with password verify the password when try to add the user
 - FT: Invitation link workspace
 - FT: Invitation link workspace y category
-- FT: delete category and all relations
-
+- FT: Delete Workspace => it delete categories and his relations
+- FT: delete category and all the relation with members and shedules

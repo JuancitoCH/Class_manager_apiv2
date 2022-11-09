@@ -160,6 +160,24 @@ class Category_Service{
 			200
 		)
 	}
+
+	async delete_user_category({user_info,category_id,data}){
+		if(!data?.user_id)return{
+			success:false,
+			code:400,
+			message:'Invalid Category: You Must Provide a user_id field'
+		}
+		const response = await this.category_user_have_permission(user_info,category_id,0)
+		if(!response.success) return response
+
+		return response_format_Promise(
+			Category_repository.delete_user_category({category_id,user_id:data.user_id}),
+			'delete',
+			201
+		)
+
+
+	}
 	
 }
 module.exports = Category_Service

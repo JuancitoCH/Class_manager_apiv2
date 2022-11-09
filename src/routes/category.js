@@ -71,4 +71,14 @@ module.exports = (app) =>{
 			}).catch(e=>next(e))
 	})
 
+	router.delete('/user/:category_id',auth_permisions([0,1,2,3]),(req,res,next)=>{
+		category_Service.delete_user_category({
+			user_info:req.user_data,
+			category_id:req.params.category_id,
+			data:req.body
+		})
+			.then(re=>{
+				return res.status(re.code).json(re)
+			}).catch(e=>next(e))
+	})
 }
