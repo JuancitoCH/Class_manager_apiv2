@@ -11,9 +11,35 @@ class Subject_queries{
 			where:{ ...filters }
 		}))
 	}
+
 	static async create(data){
-		return return_Promise(Prisma_client.subject.create({
-			data
+		return return_Promise(Prisma_client.category_subject.create({
+			data:{
+				category_relation:{ connect:{ id:data.category_id} },
+				subject_relation:{
+					create:{
+						name:data.name,
+						description:data.description,
+						owner_id:data.owner_id
+					}
+				}
+			},
+			include:{
+				subject_relation:true
+			}
+		}))
+	}
+	static async delete(data){
+		await Prisma_client.category_subject.deleteMany({
+			where:{
+				category_id:data.category_id,
+				subject_id:data.subject_id
+			},
+		})
+		return return_Promise(Prisma_client.subject.delete({
+			where:{
+				id:data.subject_id
+			},
 		}))
 	}
 }

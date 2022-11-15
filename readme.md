@@ -20,7 +20,7 @@ HolaClavedeparticionOpcioneal
 - FIX: Hay Que Cambiar los campos de los miembros, para que no pueda añadir al mismo miembro 2 veces
 
 # Doing
-
+- FT: DSUBJECT route dservice and repository
 # Todo
 
 

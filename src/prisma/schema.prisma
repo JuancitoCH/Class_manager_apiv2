@@ -93,6 +93,8 @@ model Category_subject{
 
   category_relation Category @relation(fields: [category_id],references: [id])
   subject_relation Subject @relation(fields: [subject_id],references: [id])
+
+  @@index([category_id,subject_id])
   
 }
 model Category_User{
