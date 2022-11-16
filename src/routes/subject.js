@@ -8,20 +8,35 @@ module.exports = (app) =>{
 	
 	const subject_Service = new Subject()
 	
-	router.get('/',auth_permisions([3]),(req,res,next)=>{
+	router.get('/admin/',auth_permisions([3]),(req,res,next)=>{
 		subject_Service.get_all()
 			.then(re=>{
 				return res.status(re.code).json(re)
 			}).catch(e=>next(e))
 	})
-	router.get('/one/:subject_id',auth_permisions([3]),(req,res,next)=>{
+	
+	router.get('/one/:category_id',auth_permisions([3]),(req,res,next)=>{
 		subject_Service.get_one({
-			subject_id:req.params.subject_id
+			category_id:req.params.category_id,
+			user_info:req.user_data,
+			subject_id:req.body.subject_id
 		})
 			.then(re=>{
 				return res.status(re.code).json(re)
 			}).catch(e=>next(e))
 	})
+
+	router.get('/:category_id',auth_permisions([0,1,2,3]),(req,res,next)=>{
+		subject_Service.get_from_Category({
+			category_id:req.params.category_id,
+			user_info:req.user_data,
+		})
+			.then(re=>{
+				return res.status(re.code).json(re)
+			}).catch(e=>next(e))
+	})
+
+
 	router.post('/create/:category_id',auth_permisions([0,1,2,3]),(req,res,next)=>{
 		subject_Service.create({
 			category_id:req.params.category_id,
@@ -29,7 +44,6 @@ module.exports = (app) =>{
 			data:req.body
 		})
 			.then(re=>{
-				console.log(re)
 				return res.status(re.code).json(re)
 			}).catch(e=>next(e))
 	})
@@ -40,7 +54,6 @@ module.exports = (app) =>{
 			data:req.body
 		})
 			.then(re=>{
-				console.log(re)
 				return res.status(re.code).json(re)
 			}).catch(e=>next(e))
 	})
@@ -51,7 +64,6 @@ module.exports = (app) =>{
 			data:req.body
 		})
 			.then(re=>{
-				console.log(re)
 				return res.status(re.code).json(re)
 			}).catch(e=>next(e))
 	})

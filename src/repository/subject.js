@@ -3,12 +3,30 @@ const { Prisma_client } = require('../libs')
 
 // Example Google or Meta
 class Subject_queries{
-	static async get_all(){
-		return return_Promise(Prisma_client.subject.findMany())
+	static async get_all(filters){
+		return return_Promise(Prisma_client.subject.findMany({
+			where:{
+				...(filters && filters)
+			}
+		}))
 	}
+	static async get_all_category(filters){
+		return return_Promise(Prisma_client.category_subject.findMany({
+			where:{
+				...(filters && filters)
+			},
+			include:{
+				subject_relation:true
+			}
+		}))
+	}
+
 	static async get_one(filters){
-		return return_Promise(Prisma_client.subject.findFirst({
-			where:{ ...filters }
+		return return_Promise(Prisma_client.category_subject.findFirst({
+			where:{ ...filters },
+			include:{
+				subject_relation:true
+			}
 		}))
 	}
 
@@ -42,5 +60,21 @@ class Subject_queries{
 			},
 		}))
 	}
+	static async update({
+		subject_id,
+		data
+	}){
+		return return_Promise(Prisma_client.subject.update({
+			where:{
+				id:subject_id
+			},
+			data
+		}))
+	}
+
+	static async get(){
+		return return_Promise(Prisma_client.subject.findMany())
+	}
+	
 }
 module.exports = Subject_queries
