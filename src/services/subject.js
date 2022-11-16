@@ -3,13 +3,6 @@ const response_format_no_async = require('../helpers/response_format_no_async')
 const { Subject_queries } = require('../repository')
 const Category_Service = require('./category')
 
-// const id = parseInt(id_string)
-// if(isNaN(id)) 	
-// 	return {
-// 		success:false,
-// 		message:'id provided must be a integer'
-// 	}
-
 class Subject{
 	constructor(){
 		this.CategoryService = new Category_Service()
@@ -40,7 +33,11 @@ class Subject{
 			200
 		)
 	}
-	async get_one({user_info,category_id,subject_id}){
+	async get_one({
+		user_info,
+		category_id,
+		subject_id
+	}){
 		if(!category_id) return{
 			success:false,
 			code:400,
@@ -113,7 +110,6 @@ class Subject{
 		)
 
 	}
-	// TODO: // implementar el Update
 	async update({
 		category_id,
 		user_info,

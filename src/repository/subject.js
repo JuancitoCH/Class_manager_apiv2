@@ -1,7 +1,6 @@
 const return_Promise = require('../helpers/repository/return_repository_Promise')
 const { Prisma_client } = require('../libs')
 
-// Example Google or Meta
 class Subject_queries{
 	static async get_all(filters){
 		return return_Promise(Prisma_client.subject.findMany({
